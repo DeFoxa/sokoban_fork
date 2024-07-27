@@ -58,6 +58,70 @@ impl<T: Copy + Clone + Pod + Default + Zeroable, const MAX_SIZE: usize> AST<T, M
 
         new_node
     }
+
+    pub fn set_left_child(&mut self, parent: u32, child: u32) {
+        let node = self.allocator.get_mut(parent).get_value_mut();
+        node.l = child;
+    }
+
+    pub fn set_right_child(&mut self, parent: u32, child: u32) {
+        let node = self.allocator.get_mut(parent).get_value_mut();
+        node.r = child;
+    }
+
+    pub fn get_node(&self, node: u32) -> Option<&T> {
+        if node == SENTINEL {
+            None
+        } else {
+            Some(&self.allocator.get(node).get_value().data)
+        }
+    }
+
+    pub fn get_node_mut(&mut self, node: u32) -> Option<&mut T> {
+        if node == SENTINEL {
+            None
+        } else {
+            Some(&mut self.allocator.get_mut(node).get_value_mut().data)
+        }
+    }
+
+    pub fn get_left_child(&self, node: u32) -> Option<u32> {
+        let child = self.allocator.get(node).get_value().l;
+        if child == SENTINEL {
+            None
+        } else {
+            Some(child)
+        }
+    }
+
+    pub fn get_right_child(&self, node: u32) -> Option<u32> {
+        let child = self.allocator.get(node).get_value().r;
+        if child == SENTINEL {
+            None
+        } else {
+            Some(child)
+        }
+    }
+
+    pub fn get_root(&self) -> Option<u32> {
+        if self.root == SENTINEL {
+            None
+        } else {
+            Some(self.root)
+        }
+    }
+
+    pub fn len(&self) -> usize {
+        self.allocator.size as usize
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
+
+    pub fn capacity(&self) -> usize {
+        MAX_SIZE
+    }
 }
 
 unsafe impl<T: Copy + Clone + Pod + Default + Zeroable, const MAX_SIZE: usize> Zeroable

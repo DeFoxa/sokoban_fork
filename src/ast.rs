@@ -11,6 +11,16 @@ pub struct ASTNode<T: Copy + Clone + Pod + Zeroable + Default> {
     r: u32,
 }
 
+impl<T: Copy + Clone + Pod + Zeroable + Default> ASTNode<T> {
+    pub fn new(data: T) -> Self {
+        Self {
+            data,
+            l: SENTINEL,
+            r: SENTINEL,
+        }
+    }
+}
+
 impl<T: Copy + Clone + Pod + Zeroable + Default> Default for ASTNode<T> {
     fn default() -> Self {
         Self {
@@ -20,6 +30,12 @@ impl<T: Copy + Clone + Pod + Zeroable + Default> Default for ASTNode<T> {
         }
     }
 }
+
+unsafe impl<T: Copy + Clone + Pod + Zeroable + Default> Zeroable for ASTNode<T> {}
+
+unsafe impl<T: Copy + Clone + Pod + Zeroable + Default> Pod for ASTNode<T> {}
+
+impl<T: Copy + Clone + Pod + Zeroable + Default> ZeroCopy for ASTNode<T> {}
 
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -33,6 +49,14 @@ impl<T: Copy + Clone + Pod + Default + Zeroable, const MAX_SIZE: usize> AST<T, M
             root: SENTINEL,
             allocator: NodeAllocator::new(),
         }
+    }
+    pub fn add_node(&mut self, data: T) -> u32 {
+        let new_node = self.allocator.add_node(ASTNode::new(data));
+        if self.root == SENTINEL {
+            self.root = new_node;
+        }
+
+        new_node
     }
 }
 
@@ -48,7 +72,3 @@ impl<T: Copy + Clone + Pod + Default + Zeroable, const MAX_SIZE: usize> ZeroCopy
     for AST<T, MAX_SIZE>
 {
 }
-
-unsafe impl<T: Copy + Clone + Pod + Zeroable + Default> Zeroable for ASTNode<T> {}
-unsafe impl<T: Copy + Clone + Pod + Zeroable + Default> Pod for ASTNode<T> {}
-impl<T: Copy + Clone + Pod + Zeroable + Default> ZeroCopy for ASTNode<T> {}

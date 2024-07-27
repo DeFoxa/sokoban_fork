@@ -1,3 +1,4 @@
+pub mod ast;
 pub mod avl_tree;
 pub mod critbit;
 pub mod deque;
@@ -11,6 +12,7 @@ pub use node_allocator::OrderedNodeAllocatorMap;
 pub use node_allocator::ZeroCopy;
 pub use node_allocator::SENTINEL;
 
+pub use ast::AST;
 pub use avl_tree::AVLTree;
 pub use critbit::Critbit;
 pub use deque::Deque;

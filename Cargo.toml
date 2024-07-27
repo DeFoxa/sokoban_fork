@@ -1,10 +1,10 @@
 [package]
-name = "lib-sokoban"
-version = "0.3.2"
+name = "lib-sokoban-ext"
+version = "0.1.1"
 edition = "2021"
 repository = "https://github.com/jarry-xiao/sokoban"
 authors = ["jarry-xiao <jarry.xiao@gmail.com>"]
-description = "Sokoban: compact, efficient data structures packed into contiguous byte arrays"
+description = "Fork and extension of Sokoban: compact, efficient data structures packed into contiguous byte arrays"
 license = "MIT OR Apache-2.0"
 
 [lib]

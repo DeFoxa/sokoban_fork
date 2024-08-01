@@ -50,6 +50,11 @@ impl<T: Copy + Clone + Pod + Default + Zeroable, const MAX_SIZE: usize> AST<T, M
             allocator: NodeAllocator::new(),
         }
     }
+
+    pub fn initialize(&mut self) {
+        self.allocator.initialize();
+    }
+
     pub fn add_node(&mut self, data: T) -> u32 {
         let new_node = self.allocator.add_node(ASTNode::new(data));
         if self.root == SENTINEL {
